@@ -6,10 +6,10 @@
   },
   "browser_action": {
     "default_popup": "popup.html",
-    "default_icon": "logo_phobia.png"
+    "default_icon": "logo_transparent.png"
   },
   "icons": {
-    "128": "logo_phobia.png"
+    "128": "logo_transparent.png"
   },
   "manifest_version": 2,
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
