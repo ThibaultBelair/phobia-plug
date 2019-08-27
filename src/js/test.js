@@ -15,7 +15,6 @@
 //   src.push( img.src );
 // }
 
-
 function getImgAll (doc) {
   return new Promise((resolve, reject) => {
     loadImgAll(Array.from(searchDOM(doc)))
@@ -83,14 +82,39 @@ function searchDOM (doc) {
 
 getImgAll(document).then(list => console.log(list))
 
+// document.getElementsByTagName('img')[1].style.blur(blurOffensiveImages) = "url('https://img.lemde.fr/2019/08/23/0/0/2566/1957/688/0/60/0/acb7e16_-Qaaw0A000PExC6oHMED-zVK.jpg')";
 
+// console.log(document.querySelector('img[src="https://img.lemde.fr/2019/08/23/0/0/2566/1957/688/0/60/0/acb7e16_-Qaaw0A000PExC6oHMED-zVK.jpg"]'));
+
+// document.querySelector('img[src="https://img.lemde.fr/2019/08/23/0/0/2566/1957/688/0/60/0/acb7e16_-Qaaw0A000PExC6oHMED-zVK.jpg"]').style.filter = 'blur(40px)';
 
 
 const blurOffensiveImages = (data) => {
-  // data => [{ src: 'fdskfd', alert: true }, {...}]
+//   data => [{ src: "https://img.lemde.fr/2019/08/23/0/0/2566/1957/688/0/60/0/acb7e16_-Qaaw0A000PExC6oHMED-zVK.jpg"
+// , alert: true }]
 
 
 }
+
+
+response = [
+  { src: "https://i.f1g.fr/media/figaro/375x210_crop/2016/07/08/XVM99245fcc-445d-11e6-b592-d337671c6a4c.jpg", alert: true },
+  { src: "https://i.f1g.fr/media/figaro/300x200/2016/07/08/XVM9dff23ec-4381-11e6-aedb-9ff89248825a-300x200.jpg", alert: false },
+  { src: "https://i.f1g.fr/media/eidos/52x52_crop/2019/08/23/XVMfcc0d604-b1e3-11e9-a562-34c2d8c63b1e.jpg", alert: true },
+  { src: "https://i.f1g.fr/media/eidos/52x52_crop/2019/08/22/XVM8ff88140-c28f-11e9-9a20-eddc30b21241.jpg", alert: false }
+]
+
+blurOffensiveImages(response)
+
+
+
+
+// Images
+// Analyse img du DOM -> [ { }, { }]
+// Envoie les img au serveur
+// Le serveur repond -> [{ ... alert: true }, { ... alert: false }]
+// On envoie la response du serveur a la méthode blurOffensiveImages
+// Cette méthode itere sur la reponse du serveur et floute l'image qui correspond si la clef alert vaut true
 
 
 
