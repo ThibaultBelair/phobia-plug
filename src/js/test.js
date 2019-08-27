@@ -68,16 +68,17 @@ getImgAll(document).then(list => console.log(list))
 
 
 
-// document.getElementsByTagName('img')[1].style.blur(blurOffensiveImages) = "url('https://img.lemde.fr/2019/08/23/0/0/2566/1957/688/0/60/0/acb7e16_-Qaaw0A000PExC6oHMED-zVK.jpg')";
 
-// console.log(document.querySelector('img[src="https://img.lemde.fr/2019/08/23/0/0/2566/1957/688/0/60/0/acb7e16_-Qaaw0A000PExC6oHMED-zVK.jpg"]'));
 
-// document.querySelector('img[src="https://img.lemde.fr/2019/08/23/0/0/2566/1957/688/0/60/0/acb7e16_-Qaaw0A000PExC6oHMED-zVK.jpg"]').style.filter = 'blur(40px)';
+ // document.querySelector('img[src="https://img.lemde.fr/2019/08/23/0/0/2566/1957/688/0/60/0/acb7e16_-Qaaw0A000PExC6oHMED-zVK.jpg"]').style.filter = 'blur(40px)';
 
 const blurOffensiveImages = (responses) => {
   responses.forEach(function (data) {
     if (data.alert) {
-      console.log(`need to blur img with src ${data.src}`);
+      console.log(data);
+      // console.log(`img[srcset="${data.src}"]`);
+      // console.log(document.querySelector(`img[srcset="${data.src}"]`));
+      document.querySelector(`img[srcset="${data.src}"]`).style.filter = 'blur(40px)';
     }
   });
 
@@ -86,7 +87,7 @@ const blurOffensiveImages = (responses) => {
 
 
 const responses = [
-  { src: "https://i.f1g.fr/media/figaro/375x210_crop/2016/07/08/XVM99245fcc-445d-11e6-b592-d337671c6a4c.jpg", alert: true },
+  { src: "https://i.f1g.fr/media/figaro/375x210_crop/2016/07/08/XVM99245fcc-445d-11e6-b592-d337671c6a4c.jpg 375w, https://i.f1g.fr/media/figaro/680x382_crop/2016/07/08/XVM99245fcc-445d-11e6-b592-d337671c6a4c.jpg 680w", alert: true },
   { src: "https://i.f1g.fr/media/figaro/300x200/2016/07/08/XVM9dff23ec-4381-11e6-aedb-9ff89248825a-300x200.jpg", alert: false },
   { src: "https://i.f1g.fr/media/eidos/52x52_crop/2019/08/23/XVMfcc0d604-b1e3-11e9-a562-34c2d8c63b1e.jpg", alert: true },
   { src: "https://i.f1g.fr/media/eidos/52x52_crop/2019/08/22/XVM8ff88140-c28f-11e9-9a20-eddc30b21241.jpg", alert: false }
