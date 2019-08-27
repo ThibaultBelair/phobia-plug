@@ -1,19 +1,19 @@
-const extractImagesFromDom = () => {
+// const extractImagesFromDom = () => {
 
-}
+// }
 
-const extractTextBlobsFromDom = () => {
+// const extractTextBlobsFromDom = () => {
 
-}
+// }
 
-// extractImagesFromDom() -> [{ src: 'http://toto.jpg', alt: 'toto' }, { ... } ]
-// extractTextBlobsFromDom() -> [{ tag: 'p', content: 'lorem ispum', id: '25GF3' } , { ... } ]
+// // extractImagesFromDom() -> [{ src: 'http://toto.jpg', alt: 'toto' }, { ... } ]
+// // extractTextBlobsFromDom() -> [{ tag: 'p', content: 'lorem ispum', id: '25GF3' } , { ... } ]
 
-const imgs = document.querySelectorAll( 'img' );
-const src = [];
-for( const i = imgs.length; i--; ) {
-  src.push( img.src );
-}
+// const imgs = document.querySelectorAll( 'img' );
+// const src = [];
+// for( const i = imgs.length; i--; ) {
+//   src.push( img.src );
+// }
 
 
 function getImgAll (doc) {
@@ -22,33 +22,33 @@ function getImgAll (doc) {
       .then(resolve, reject)
   })
 
-  function searchDOM (doc) {
-    const srcChecker = /url\(\s*?['"]?\s*?(\S+?)\s*?["']?\s*?\)/i
-    return Array.from(doc.querySelectorAll('*'))
-      .reduce((collection, node) => {
-        // bg src
-        let prop = window.getComputedStyle(node, null)
-          .getPropertyValue('background-image')
-        // match `url(...)`
-        let match = srcChecker.exec(prop)
-        if (match) {
-          collection.add(match[1])
-        }
+function searchDOM (doc) {
+  const srcChecker = /url\(\s*?['"]?\s*?(\S+?)\s*?["']?\s*?\)/i
+  return Array.from(doc.querySelectorAll('*'))
+    .reduce((collection, node) => {
+      // bg src
+      let prop = window.getComputedStyle(node, null)
+        .getPropertyValue('background-image')
+      // match `url(...)`
+      let match = srcChecker.exec(prop)
+      if (match) {
+        collection.add(match[1])
+      }
 
-        if (/^img$/i.test(node.tagName)) {
-          // src from img tag
-          collection.add(node.src)
-        } else if (/^frame$/i.test(node.tagName)) {
-          // iframe
-          try {
-            searchDOM(node.contentDocument || node.contentWindow.document)
-              .forEach(img => {
-                if (img) { collection.add(img) }
-              })
-          } catch (e) {}
-        }
-        return collection
-      }, new Set())
+      if (/^img$/i.test(node.tagName)) {
+        // src from img tag
+        collection.add(node.src)
+      } else if (/^frame$/i.test(node.tagName)) {
+        // iframe
+        try {
+          searchDOM(node.contentDocument || node.contentWindow.document)
+            .forEach(img => {
+              if (img) { collection.add(img) }
+            })
+        } catch (e) {}
+      }
+      return collection
+    }, new Set())
   }
 
   function loadImg (src, timeout = 500) {
@@ -82,3 +82,15 @@ function getImgAll (doc) {
 }
 
 getImgAll(document).then(list => console.log(list))
+
+
+
+
+const blurOffensiveImages = (data) => {
+  // data => [{ src: 'fdskfd', alert: true }, {...}]
+
+
+}
+
+
+
