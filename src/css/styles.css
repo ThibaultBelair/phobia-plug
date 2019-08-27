@@ -1,0 +1,12 @@
+#bee {
+  border-radius:         28%;
+  -o-border-radius:      28%;
+  -webkit-border-radius: 28%;
+  -moz-border-radius:    28%;
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  z-index: 40;
+  width: 208px;
+  height: 208px;
+}
