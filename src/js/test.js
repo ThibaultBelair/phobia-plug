@@ -60,16 +60,33 @@ function searchDOM (doc) {
   }
 }
 getImgAll(document).then(list => {
-    dataToSend = {
+    dataToSend = [{
       urls: list,
       keywords: ['spider', 'snake']
-    }
+      // à modif en key value , pas sûr de la forme du tableau
+    }]
     console.log(dataToSend)
     console.log("je dois envoyer cette liste a rails")
   }
 )
 
 // fetch sur le localhost8000
+const url = 'https://localhost8000/fake.json';
+const data = dataToSend;
+
+fetch(url, {
+  method: 'POST', // or 'PUT'
+  body: JSON.stringify(data), // data can be `string` or {object}!
+  headers:{
+    '?': '?'
+  }
+}).then(res => res.json())
+.then(response => console.log('Success:', JSON.stringify(response)))
+.catch(error => console.error('Error:', error));
+
+
+
+
 
 const GetUrlKeywordsToRails = (requests) => {
   requests.forEach(function (data) {
