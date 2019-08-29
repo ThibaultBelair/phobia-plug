@@ -38,11 +38,7 @@ function searchDOM (doc) {
     var imgPromise = new Promise((resolve, reject) => {
       let img = new Image()
       img.onload = () => {
-        resolve({
-          src: src,
-          width: img.naturalWidth,
-          height: img.naturalHeight
-        })
+        resolve(src)
       }
       img.onerror = reject
       img.src = src
@@ -63,37 +59,86 @@ function searchDOM (doc) {
     })
   }
 }
-getImgAll(document).then(list => console.log(list))
+getImgAll(document).then(list => {
+    dataToSend = [{
+      urls: list,
+      keywords: ['spider', 'snake']
+      // à modif en key value , pas sûr de la forme du tableau
+    }]
+    console.log(dataToSend)
+    console.log("je dois envoyer cette liste a rails")
+  }
+)
+
+// fetch sur le localhost8000
+const url = 'https://localhost8000/fake.json';
+const data = dataToSend;
+
+fetch(url, {
+  method: 'POST', // or 'PUT'
+  body: JSON.stringify(data), // data can be `string` or {object}!
+  headers:{
+    '?': '?'
+  }
+}).then(res => res.json())
+.then(response => console.log('Success:', JSON.stringify(response)))
+.catch(error => console.error('Error:', error));
 
 
 
 
 
-
- // document.querySelector('img[src="https://img.lemde.fr/2019/08/23/0/0/2566/1957/688/0/60/0/acb7e16_-Qaaw0A000PExC6oHMED-zVK.jpg"]').style.filter = 'blur(40px)';
-
-const blurOffensiveImages = (responses) => {
-  responses.forEach(function (data) {
-    if (data.alert) {
-      console.log(data);
+const GetUrlKeywordsToRails = (requests) => {
+  requests.forEach(function (data) {
+    if (data.keywords === 'spider') {
+      // console.log(data);
       // console.log(`img[srcset="${data.src}"]`);
       // console.log(document.querySelector(`img[srcset="${data.src}"]`));
-      document.querySelector(`img[srcset="${data.src}"]`).style.filter = 'blur(40px)';
+      document.querySelector(`img[srcset="${data.src}"]`);
     }
   });
 
-  // console.log(responses);
+  // console.log(request);
 };
 
 
-const responses = [
-  { src: "https://i.f1g.fr/media/figaro/375x210_crop/2016/07/08/XVM99245fcc-445d-11e6-b592-d337671c6a4c.jpg 375w, https://i.f1g.fr/media/figaro/680x382_crop/2016/07/08/XVM99245fcc-445d-11e6-b592-d337671c6a4c.jpg 680w", alert: true },
-  { src: "https://i.f1g.fr/media/figaro/300x200/2016/07/08/XVM9dff23ec-4381-11e6-aedb-9ff89248825a-300x200.jpg", alert: false },
-  { src: "https://i.f1g.fr/media/eidos/52x52_crop/2019/08/23/XVMfcc0d604-b1e3-11e9-a562-34c2d8c63b1e.jpg", alert: true },
-  { src: "https://i.f1g.fr/media/eidos/52x52_crop/2019/08/22/XVM8ff88140-c28f-11e9-9a20-eddc30b21241.jpg", alert: false }
+const requests = [
+  { src: "https://i.f1g.fr/media/figaro/375x210_crop/2016/07/08/XVM99245fcc-445d-11e6-b592-d337671c6a4c.jpg 375w, https://i.f1g.fr/media/figaro/680x382_crop/2016/07/08/XVM99245fcc-445d-11e6-b592-d337671c6a4c.jpg 680w", keywords: 'spider' },
+  { src: "https://i.f1g.fr/media/figaro/300x200/2016/07/08/XVM9dff23ec-4381-11e6-aedb-9ff89248825a-300x200.jpg", keywords: false },
+  { src: "https://i.f1g.fr/media/eidos/52x52_crop/2019/08/23/XVMfcc0d604-b1e3-11e9-a562-34c2d8c63b1e.jpg", keywords: 'spider' },
+  { src: "https://i.f1g.fr/media/eidos/52x52_crop/2019/08/22/XVM8ff88140-c28f-11e9-9a20-eddc30b21241.jpg", keywords: false }
 ]
 
-blurOffensiveImages(responses);
+
+GetUrlKeywordsToRails(requests);
+
+
+
+
+
+// const blurOffensiveImages = (responses) => {
+//   responses.forEach(function (data) {
+//     if (data.alert) {
+//       console.log(data);
+//       // console.log(`img[srcset="${data.src}"]`);
+//       // console.log(document.querySelector(`img[srcset="${data.src}"]`));
+//       document.querySelector(`img[srcset="${data.src}"]`).style.filter = 'blur(40px)';
+//     }
+//   });
+
+//   // console.log(responses);
+// };
+
+
+// const responses = [
+//   { src: "https://i.f1g.fr/media/figaro/375x210_crop/2016/07/08/XVM99245fcc-445d-11e6-b592-d337671c6a4c.jpg 375w, https://i.f1g.fr/media/figaro/680x382_crop/2016/07/08/XVM99245fcc-445d-11e6-b592-d337671c6a4c.jpg 680w", alert: true },
+//   { src: "https://i.f1g.fr/media/figaro/300x200/2016/07/08/XVM9dff23ec-4381-11e6-aedb-9ff89248825a-300x200.jpg", alert: false },
+//   { src: "https://i.f1g.fr/media/eidos/52x52_crop/2019/08/23/XVMfcc0d604-b1e3-11e9-a562-34c2d8c63b1e.jpg", alert: true },
+//   { src: "https://i.f1g.fr/media/eidos/52x52_crop/2019/08/22/XVM8ff88140-c28f-11e9-9a20-eddc30b21241.jpg", alert: false }
+// ]
+
+
+// blurOffensiveImages(responses);
 
 
 
