@@ -59,34 +59,27 @@ function searchDOM (doc) {
     })
   }
 }
-getImgAll(document).then(list => {
-    dataToSend = [{
+
+ getImgAll(document).then(list => {
+    const dataToSend = {
       urls: list,
       keywords: ['spider', 'snake']
-      // à modif en key value , pas sûr de la forme du tableau
-    }]
-    console.log(dataToSend)
-    console.log("je dois envoyer cette liste a rails")
+    };
+    console.log(dataToSend);
+    // console.log("je dois envoyer cette liste a rails")
+
+    chrome.runtime.sendMessage(
+    {
+        contentScriptQuery: "postData"
+        , data: JSON.stringify(dataToSend)
+        , url: 'https://8399ced4.ngrok.io/fake'
+    }, function (response) {
+      console.log(response)
+    });
+
+
   }
-)
-
-// fetch sur le localhost8000
-const url = 'https://localhost8000/fake.json';
-const data = dataToSend;
-
-fetch(url, {
-  method: 'POST', // or 'PUT'
-  body: JSON.stringify(data), // data can be `string` or {object}!
-  headers:{
-    '?': '?'
-  }
-}).then(res => res.json())
-.then(response => console.log('Success:', JSON.stringify(response)))
-.catch(error => console.error('Error:', error));
-
-
-
-
+);
 
 const GetUrlKeywordsToRails = (requests) => {
   requests.forEach(function (data) {

@@ -1,0 +1,17 @@
+webpackHotUpdate("background",{
+
+/***/ "./src/img/logo_phobia.png":
+false,
+
+/***/ "./src/js/background.js":
+/*!******************************!*\
+  !*** ./src/js/background.js ***!
+  \******************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+eval("// import '../img/logo_phobia.png'\n\nconsole.log(\"heyhey\")\n\nchrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {\n  console.log(\"tototototooto\")\n    if (request.contentScriptQuery == \"getdata\") {\n        var url = request.url;\n        fetch(url)\n            .then(response => response.text())\n            .then(response => sendResponse(response))\n            .catch()\n        return true;\n    }\n    if (request.contentScriptQuery == \"postData\") {\n        fetch(request.url, {\n            method: 'POST',\n            headers: {\n                'Accept': 'application/json, application/xml, text/plain, text/html, *.*',\n                'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'\n            },\n            body: 'result=' + request.data\n        })\n            .then(response => response.json())\n            .then(response => sendResponse(response))\n            .catch(error => console.log('Error:', error));\n        return true;\n    }\n});\n//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiLi9zcmMvanMvYmFja2dyb3VuZC5qcy5qcyIsInNvdXJjZXMiOlsid2VicGFjazovLy8uL3NyYy9qcy9iYWNrZ3JvdW5kLmpzPzgxMDQiXSwic291cmNlc0NvbnRlbnQiOlsiLy8gaW1wb3J0ICcuLi9pbWcvbG9nb19waG9iaWEucG5nJ1xuXG5jb25zb2xlLmxvZyhcImhleWhleVwiKVxuXG5jaHJvbWUucnVudGltZS5vbk1lc3NhZ2UuYWRkTGlzdGVuZXIoZnVuY3Rpb24gKHJlcXVlc3QsIHNlbmRlciwgc2VuZFJlc3BvbnNlKSB7XG4gIGNvbnNvbGUubG9nKFwidG90b3RvdG90b290b1wiKVxuICAgIGlmIChyZXF1ZXN0LmNvbnRlbnRTY3JpcHRRdWVyeSA9PSBcImdldGRhdGFcIikge1xuICAgICAgICB2YXIgdXJsID0gcmVxdWVzdC51cmw7XG4gICAgICAgIGZldGNoKHVybClcbiAgICAgICAgICAgIC50aGVuKHJlc3BvbnNlID0+IHJlc3BvbnNlLnRleHQoKSlcbiAgICAgICAgICAgIC50aGVuKHJlc3BvbnNlID0+IHNlbmRSZXNwb25zZShyZXNwb25zZSkpXG4gICAgICAgICAgICAuY2F0Y2goKVxuICAgICAgICByZXR1cm4gdHJ1ZTtcbiAgICB9XG4gICAgaWYgKHJlcXVlc3QuY29udGVudFNjcmlwdFF1ZXJ5ID09IFwicG9zdERhdGFcIikge1xuICAgICAgICBmZXRjaChyZXF1ZXN0LnVybCwge1xuICAgICAgICAgICAgbWV0aG9kOiAnUE9TVCcsXG4gICAgICAgICAgICBoZWFkZXJzOiB7XG4gICAgICAgICAgICAgICAgJ0FjY2VwdCc6ICdhcHBsaWNhdGlvbi9qc29uLCBhcHBsaWNhdGlvbi94bWwsIHRleHQvcGxhaW4sIHRleHQvaHRtbCwgKi4qJyxcbiAgICAgICAgICAgICAgICAnQ29udGVudC1UeXBlJzogJ2FwcGxpY2F0aW9uL3gtd3d3LWZvcm0tdXJsZW5jb2RlZDsgY2hhcnNldD11dGYtOCdcbiAgICAgICAgICAgIH0sXG4gICAgICAgICAgICBib2R5OiAncmVzdWx0PScgKyByZXF1ZXN0LmRhdGFcbiAgICAgICAgfSlcbiAgICAgICAgICAgIC50aGVuKHJlc3BvbnNlID0+IHJlc3BvbnNlLmpzb24oKSlcbiAgICAgICAgICAgIC50aGVuKHJlc3BvbnNlID0+IHNlbmRSZXNwb25zZShyZXNwb25zZSkpXG4gICAgICAgICAgICAuY2F0Y2goZXJyb3IgPT4gY29uc29sZS5sb2coJ0Vycm9yOicsIGVycm9yKSk7XG4gICAgICAgIHJldHVybiB0cnVlO1xuICAgIH1cbn0pO1xuIl0sIm1hcHBpbmdzIjoiQUFBQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBOyIsInNvdXJjZVJvb3QiOiIifQ==\n//# sourceURL=webpack-internal:///./src/js/background.js\n");
+
+/***/ })
+
+})
