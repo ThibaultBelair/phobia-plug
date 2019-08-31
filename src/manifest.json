@@ -1,9 +1,11 @@
 {
   "name": "Phobia Plug-in Dev",
   "options_page": "options.html",
-  "background": {
-    "page": "background.html"
-  },
+  "permissions": [
+    "webNavigation",
+    "http://www.phobia.live/",
+    "https://www.google.com/",
+    "https://localhost:3001/fake.json"],
   "browser_action": {
     "default_popup": "popup.html",
     "default_icon": "logo_transparent.png"
