@@ -23,9 +23,6 @@ function fetchResource(input, init) {
   });
 }
 
-
-
-
 // Images
 // 1. Analyse img du DOM -> [ { }, { } ]
 // 2. Envoie les img au serveur -> fetchResource
@@ -35,81 +32,62 @@ function fetchResource(input, init) {
 
 
 // 1.
-getImgAll(document)
-  .then((images) => {
-    fetchResource('http://localhost:3000/api/v1/images', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ toto: images })
-    }).then(response => response.json())
-      .then((data) => {
-        blurOffensiveImages(data)
-      })
+const images = getImgAll(document)
+console.log(images);
+fetchResource('http://localhost:3000/api/v1/images', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    images: images,
+    keywords: ['spider']
   })
+}).then(response => response.json())
+  .then((data) => {
+    blurOffensiveImages(data)
+   })
 
 
 
 function getImgAll(doc) {
-  return new Promise((resolve, reject) => {
-    loadImgAll(Array.from(searchDOM(doc)))
-      .then(resolve, reject)
-  })
-
-function searchDOM (doc) {
   const srcChecker = /url\(\s*?['"]?\s*?(\S+?)\s*?["']?\s*?\)/i
   return Array.from(doc.querySelectorAll('*'))
     .reduce((collection, node) => {
-      node.setAttribute('data-phobia-id', Math.random())
       // bg src
       let prop = window.getComputedStyle(node, null)
         .getPropertyValue('background-image')
       // match `url(...)`
       let match = srcChecker.exec(prop)
       if (match) {
-        collection.add(match[1])
+        const id = Math.random().toString(36).substr(2, 9);
+        node.setAttribute('data-phobia-id', id)
+        collection.push({
+          url: match[1],
+          id: id
+        })
       }
 
       if (/^img$/i.test(node.tagName)) {
         // src from img tag
-        collection.add(node.src)
-      } else if (/^frame$/i.test(node.tagName)) {
-        // iframe
-        try {
-          searchDOM(node.contentDocument || node.contentWindow.document)
-            .forEach(img => {
-              if (img) { collection.add(img) }
-            })
-        } catch (e) {}
+        const id = Math.random().toString(36).substr(2, 9);
+        node.setAttribute('data-phobia-id', id)
+        collection.push({
+          url: node.src,
+          id: id
+        })
+
       }
+
       return collection
-    }, new Set())
-  }
-
-  function loadImg (src, timeout = 500) {
-    var imgPromise = new Promise((resolve, reject) => {
-      let img = new Image()
-      img.onload = () => {
-        resolve(src)
-      }
-      img.onerror = reject
-      img.src = src
-    })
-    var timer = new Promise((resolve, reject) => {
-      setTimeout(reject, timeout)
-    })
-    return Promise.race([imgPromise, timer])
-  }
-
-  function loadImgAll (imgList, timeout = 500) {
-    return new Promise((resolve, reject) => {
-      Promise.all(
-        imgList
-          .map(src => loadImg(src, timeout))
-          .map(p => p.catch(e => false))
-      ).then(results => resolve(results.filter(r => r)))
-    })
-  }
+    }, [])
 }
+
+const blurOffensiveImages = (responses) => {
+  responses.forEach(function (data) {
+    if (data.alert) {
+      document.querySelector(`img[data-phobia-id="${data.id}"]`).style.filter = 'blur(40px)';
+    }
+  });
+};
 
 // getImgAll(document).then(list => {
 //     const dataToSend = {
@@ -131,10 +109,6 @@ function searchDOM (doc) {
 
 //   }
 // );
-
-
-
-
 
 const GetUrlKeywordsToRails = (requests) => {
   requests.forEach(function (data) {
@@ -160,33 +134,6 @@ const requests = [
 
 // GetUrlKeywordsToRails(requests);
 
-
-
-
-
-
-const blurOffensiveImages = (responses) => {
-  responses.forEach(function (data) {
-    if (data.alert) {
-      console.log(data);
-      // console.log(`img[srcset="${data.src}"]`);
-      // console.log(document.querySelector(`img[srcset="${data.src}"]`));
-      // const image1 = document.querySelector(`img[srcset="${data.src}"]`)
-      // const image2 = document.querySelector(`img[src="${data.src}"]`)
-      document.querySelector(`[data-phobia-id="${data.phobia_id}"]`).style.filter = 'blur(40px);'
-
-      if (image1) {
-        image1.style.filter = 'blur(40px)';
-      }
-
-      if (image2) {
-        image2.style.filter = 'blur(40px)';
-      }
-    }
-  });
-
-  // console.log(responses);
-};
 
 // const responses = [
 //   { src: "https://costarica-decouverte.com/wp-content/uploads/2018/10/tarentule-costa-rica-decouverte-262x172.jpg 262w, https://costarica-decouverte.com/wp-content/uploads/2018/10/tarentule-costa-rica-decouverte-700x460.jpg 700w", alert: true },
