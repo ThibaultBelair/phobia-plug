@@ -1,3 +1,41 @@
+// This file is executed in the context of the webpage
+// So you have to analyse DOM here
+// Then communicate with your server using the "fetchResource" method
+// instead of classical fetch to handle security preventions
+
+
+// This method should be used exactly like classical fetch
+function fetchResource(input, init) {
+  return new Promise((resolve, reject) => {
+    chrome.runtime.sendMessage({input, init}, messageResponse => {
+      const [response, error] = messageResponse;
+      if (response === null) {
+        reject(error);
+      } else {
+        // Use undefined on a 204 - No Content
+        const body = response.body ? new Blob([response.body]) : undefined;
+        resolve(new Response(body, {
+          status: response.status,
+          statusText: response.statusText,
+        }));
+      }
+    });
+  });
+}
+
+
+
+// Images
+// Analyse img du DOM -> [ { }, { } ]
+// Envoie les img au serveur -> fetchResource
+// Le serveur repond -> [{ ... alert: true }, { ... alert: false }]
+// On envoie la response du serveur a la méthode blurOffensiveImages
+// Cette méthode itere sur la reponse du serveur et floute l'image qui correspond si la clef alert vaut true
+
+
+
+
+
 
 function getImgAll (doc) {
   return new Promise((resolve, reject) => {
@@ -114,6 +152,7 @@ GetUrlKeywordsToRails(requests);
 
 
 
+
 const blurOffensiveImages = (responses) => {
   responses.forEach(function (data) {
     if (data.alert) {
@@ -157,3 +196,7 @@ blurOffensiveImages(responses);
 
 
 
+
+fetchResource('http://localhost:3000/api/v1/words', { method: 'POST' })
+  .then(response => response.json())
+  .then(data => { console.log(data) })
