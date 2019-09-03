@@ -55,16 +55,12 @@ const blurOffensiveImages = (responses) => {
   responses.forEach(function (data) {
     if (data.alert) {
       document.querySelector(`img[data-phobia-id="${data.id}"]`).style.filter = 'blur(40px)';
+      document.querySelector(`img[data-phobia-id="${data.id}"]`).setAttribute('data-alert', true);
+    } else {
+      document.querySelector(`img[data-phobia-id="${data.id}"]`).style.filter = '';
+      document.querySelector(`img[data-phobia-id="${data.id}"]`).setAttribute('data-alert', false);
     }
   });
 };
 
-const GetUrlKeywordsToRails = (requests) => {
-  requests.forEach(function (data) {
-    if (data.keywords === 'spider') {
-      document.querySelector(`img[srcset="${data.src}"]`);
-    }
-  });
-};
-
-export { fetchResource, getImgAll, blurOffensiveImages, GetUrlKeywordsToRails }
+export { fetchResource, getImgAll, blurOffensiveImages }
