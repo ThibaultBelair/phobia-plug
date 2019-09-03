@@ -5,39 +5,44 @@ import { fetchResource, getImgAll, blurOffensiveImages } from './utils'
 // Then communicate with your server using the "fetchResource" method
 // instead of classical fetch to handle security preventions
 
-const html = document.querySelector('html')
-html.style.filter = 'opacity(0)';
+chrome.runtime.sendMessage({ message: 'currentStatus' }, (response) => {
+  if (response === true) {
+    const html = document.querySelector('html')
+    html.style.filter = 'opacity(0)';
 
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('img').forEach((img) => { img.style.filter = 'blur(40px)' });
-  html.style.transition = 'filter ease 0.3s';
-  html.style.filter = 'opacity(1)';
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('img').forEach((img) => { img.style.filter = 'blur(40px)' });
+      html.style.transition = 'filter ease 0.3s';
+      html.style.filter = 'opacity(1)';
 
-  const images = getImgAll(document)
-  analyseImages(images);
+      const images = getImgAll(document)
+      analyseImages(images);
 
-  const targetNode = document.querySelector('body');
-  const config = { attributes: false, childList: true, subtree: true };
+      const targetNode = document.querySelector('body');
+      const config = { attributes: false, childList: true, subtree: true };
 
-  // Callback function to execute when mutations are observed
-  const callback = function(mutationsList, observer) {
-    mutationsList[0].addedNodes.forEach((node) => {
-      try {
-        const images = node.querySelectorAll('img')
-        const imagesArray = processImages(images);
-        analyseImages(imagesArray);
-      } catch {
-        console.log('error');
-      }
+      // Callback function to execute when mutations are observed
+      const callback = function(mutationsList, observer) {
+        mutationsList[0].addedNodes.forEach((node) => {
+          try {
+            const images = node.querySelectorAll('img')
+            const imagesArray = processImages(images);
+            analyseImages(imagesArray);
+          } catch {
+            console.log('error');
+          }
+        })
+      };
+
+      // Create an observer instance linked to the callback function
+      const observer = new MutationObserver(callback);
+
+      // Start observing the target node for configured mutations
+      observer.observe(targetNode, config);
     })
-  };
-
-  // Create an observer instance linked to the callback function
-  const observer = new MutationObserver(callback);
-
-  // Start observing the target node for configured mutations
-  observer.observe(targetNode, config);
+  }
 })
+
 
 const analyseImages = (images) => {
   fetchResource('http://localhost:3000/api/v1/images', {

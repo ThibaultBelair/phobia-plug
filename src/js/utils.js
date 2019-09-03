@@ -2,7 +2,7 @@
 // This method should be used exactly like classical fetch
 function fetchResource(input, init) {
   return new Promise((resolve, reject) => {
-    chrome.runtime.sendMessage({ input, init }, messageResponse => {
+    chrome.runtime.sendMessage({ input: input, init: init, message: 'fetch' }, messageResponse => {
       const [response, error] = messageResponse;
       if (response === null) {
         reject(error);
