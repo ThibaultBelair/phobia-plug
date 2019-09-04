@@ -14,6 +14,7 @@ chrome.runtime.sendMessage({ message: 'phobiasChecked' }, (response) => {
   phobiasArray = response
 })
 
+
 chrome.runtime.sendMessage({ message: 'currentStatus' }, (response) => {
   if (response === true) {
     html.style.filter = 'opacity(0)';
@@ -22,7 +23,7 @@ chrome.runtime.sendMessage({ message: 'currentStatus' }, (response) => {
       initPhobia()
     });
 
-    if (document.readyState == 'complete' || document.readyState == 'loaded') {
+    if (document.readyState == 'complete' || document.readyState == 'loaded' || document.readyState == 'interactive') {
       if (!phobiaStarted) {
         initPhobia()
       }
@@ -34,7 +35,6 @@ const initPhobia = () => {
   phobiaStarted = true;
   document.querySelectorAll('img').forEach((img) => { img.style.filter = 'blur(40px)' });
   html.style.transition = 'filter ease 0.3s';
-  console.log('remove opacity')
   html.style.filter = 'opacity(1)';
 
   const images = getImgAll(document)
