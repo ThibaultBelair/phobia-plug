@@ -17,4 +17,16 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   if (request.message == 'currentStatus') {
     sendResponse(localStorage.getItem('phobiaRunning') === 'true');
   }
+
+  if (request.message == 'phobiasChecked') {
+    let phobia = localStorage.getItem('phobias')
+
+    if (phobia) {
+      phobia = phobia.split(',')
+    } else {
+      phobia = []
+    }
+
+    sendResponse(phobia);
+  }
 });

@@ -1,5 +1,5 @@
 {
-  "name": "Phobia Plug-in Dev",
+  "name": "Phobia",
   "options_page": "options.html",
   "permissions": [
     "webNavigation",
@@ -8,10 +8,10 @@
     "https://localhost:3001/fake.json"],
   "browser_action": {
     "default_popup": "popup.html",
-    "default_icon": "logo_transparent.png"
+    "default_icon": "plug_icon.png"
   },
   "icons": {
-    "128": "logo_transparent.png"
+    "128": "plug_icon.png"
   },
   "manifest_version": 2,
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",

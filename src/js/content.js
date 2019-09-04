@@ -5,6 +5,13 @@ import { fetchResource, getImgAll, blurOffensiveImages } from './utils'
 // Then communicate with your server using the "fetchResource" method
 // instead of classical fetch to handle security preventions
 
+
+let phobiasArray;
+
+chrome.runtime.sendMessage({ message: 'phobiasChecked' }, (response) => {
+  phobiasArray = response
+})
+
 chrome.runtime.sendMessage({ message: 'currentStatus' }, (response) => {
   if (response === true) {
     const html = document.querySelector('html')
@@ -45,12 +52,12 @@ chrome.runtime.sendMessage({ message: 'currentStatus' }, (response) => {
 
 
 const analyseImages = (images) => {
-  fetchResource('http://localhost:3000/api/v1/images', {
+  fetchResource('http://localhost:3001/api/v1/images', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       images: images,
-      keywords: ['snake', 'python', 'boa']
+      phobias: phobiasArray
     })
   }).then(response => response.json())
     .then((data) => {
