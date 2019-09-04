@@ -6,7 +6,9 @@ import { fetchResource, getImgAll, blurOffensiveImages } from './utils'
 // instead of classical fetch to handle security preventions
 
 
+let phobiaStarted = false;
 let phobiasArray;
+const html = document.querySelector('html')
 
 chrome.runtime.sendMessage({ message: 'phobiasChecked' }, (response) => {
   phobiasArray = response
@@ -14,55 +16,68 @@ chrome.runtime.sendMessage({ message: 'phobiasChecked' }, (response) => {
 
 chrome.runtime.sendMessage({ message: 'currentStatus' }, (response) => {
   if (response === true) {
-    const html = document.querySelector('html')
     html.style.filter = 'opacity(0)';
 
     document.addEventListener('DOMContentLoaded', () => {
-      document.querySelectorAll('img').forEach((img) => { img.style.filter = 'blur(40px)' });
-      html.style.transition = 'filter ease 0.3s';
-      html.style.filter = 'opacity(1)';
+      initPhobia()
+    });
 
-      const images = getImgAll(document)
-      analyseImages(images);
-
-      const targetNode = document.querySelector('body');
-      const config = { attributes: false, childList: true, subtree: true };
-
-      // Callback function to execute when mutations are observed
-      const callback = function(mutationsList, observer) {
-        mutationsList[0].addedNodes.forEach((node) => {
-          try {
-            const images = node.querySelectorAll('img')
-            const imagesArray = processImages(images);
-            analyseImages(imagesArray);
-          } catch {
-            console.log('error');
-          }
-        })
-      };
-
-      // Create an observer instance linked to the callback function
-      const observer = new MutationObserver(callback);
-
-      // Start observing the target node for configured mutations
-      observer.observe(targetNode, config);
-    })
+    if (document.readyState == 'complete' || document.readyState == 'loaded') {
+      if (!phobiaStarted) {
+        initPhobia()
+      }
+    }
   }
 })
 
+const initPhobia = () => {
+  phobiaStarted = true;
+  document.querySelectorAll('img').forEach((img) => { img.style.filter = 'blur(40px)' });
+  html.style.transition = 'filter ease 0.3s';
+  console.log('remove opacity')
+  html.style.filter = 'opacity(1)';
+
+  const images = getImgAll(document)
+  analyseImages(images);
+
+  const targetNode = document.querySelector('body');
+  const config = { attributes: false, childList: true, subtree: true };
+
+  // Callback function to execute when mutations are observed
+  const callback = function(mutationsList, observer) {
+    mutationsList[0].addedNodes.forEach((node) => {
+      try {
+        const images = node.querySelectorAll('img')
+        const imagesArray = processImages(images);
+        analyseImages(imagesArray);
+      } catch {
+        console.log('error');
+      }
+    })
+  };
+
+  // Create an observer instance linked to the callback function
+  const observer = new MutationObserver(callback);
+
+  // Start observing the target node for configured mutations
+  observer.observe(targetNode, config);
+}
+
 
 const analyseImages = (images) => {
-  fetchResource('http://localhost:3001/api/v1/images', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      images: images,
-      phobias: phobiasArray
-    })
-  }).then(response => response.json())
-    .then((data) => {
-      blurOffensiveImages(data)
-    })
+  if (images.length > 0) {
+    fetchResource('http://localhost:3001/api/v1/images', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        images: images,
+        phobias: phobiasArray
+      })
+    }).then(response => response.json())
+      .then((data) => {
+        blurOffensiveImages(data)
+      })
+  }
 }
 
 const processImages = (images) => {
