@@ -66,7 +66,7 @@ const initPhobia = () => {
 
 const analyseImages = (images) => {
   if (images.length > 0) {
-    fetchResource('http://localhost:3001/api/v1/images', {
+    fetchResource('https://phobia-wagon.herokuapp.com/api/v1/images', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
