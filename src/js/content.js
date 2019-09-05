@@ -75,6 +75,8 @@ const analyseImages = (images) => {
       })
     }).then(response => response.json())
       .then((data) => {
+        console.log("images we sent", images)
+        console.log("response from server", data);
         blurOffensiveImages(data)
       })
   }
