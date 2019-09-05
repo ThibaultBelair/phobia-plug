@@ -5,6 +5,7 @@
     "webNavigation",
     "http://www.phobia.live/",
     "https://www.google.com/",
+    "https://phobia-wagon.herokuapp.com/",
     "https://localhost:3001/fake.json"],
   "browser_action": {
     "default_popup": "popup.html",
