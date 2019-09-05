@@ -53,12 +53,13 @@ function getImgAll(doc) {
 
 const blurOffensiveImages = (responses) => {
   responses.forEach(function (data) {
+    const element = document.querySelector(`[data-phobia-id="${data.id}"]`)
     if (data.alert) {
-      document.querySelector(`img[data-phobia-id="${data.id}"]`).style.filter = 'blur(40px)';
-      document.querySelector(`img[data-phobia-id="${data.id}"]`).setAttribute('data-alert', true);
+      element.style.filter = 'blur(40px)';
+      element.setAttribute('data-alert', true);
     } else {
-      document.querySelector(`img[data-phobia-id="${data.id}"]`).style.filter = '';
-      document.querySelector(`img[data-phobia-id="${data.id}"]`).setAttribute('data-alert', false);
+      element.style.filter = '';
+      element.setAttribute('data-alert', false);
     }
   });
 };
